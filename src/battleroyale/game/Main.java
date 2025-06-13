@@ -4,6 +4,7 @@ import battleroyale.characters.*;
 import battleroyale.tools.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.*;
 
 public class Main {
@@ -16,16 +17,16 @@ public class Main {
         System.out.print("Difficulty level (1-3): ");
         int diff = Integer.parseInt(sc.nextLine());
 
-        List<GameCharacter> availableChars;
-        List<Tool> availableTools;
-        try {
-            availableChars = Config.loadCharacters("characters.txt");
-            availableTools = Config.loadTools("tools.txt");
-        } catch (IOException e) {
-            System.out.println("Failed to load files, using defaults");
-            availableChars = Arrays.asList(new Warrior("W1"), new Mage("M1"), new Rogue("R1"));
-            availableTools = Arrays.asList(new Sword(), new Shield(), new Staff());
-        }
+        List<GameCharacter> availableChars = new ArrayList<>(Arrays.asList(
+                new Warrior("W1"),
+                new Mage("M1"),
+                new Rogue("R1")
+        ));
+        List<Tool> availableTools = new ArrayList<>(Arrays.asList(
+                new Sword(),
+                new Shield(),
+                new Staff()
+        ));
 
         if (availableChars.size() < human + machine || availableTools.size() < human + machine) {
             System.out.println("Not enough resources to start game");
