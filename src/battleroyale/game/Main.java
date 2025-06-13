@@ -4,7 +4,6 @@ import battleroyale.characters.*;
 import battleroyale.tools.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.*;
 
 public class Main {
@@ -17,34 +16,40 @@ public class Main {
         System.out.print("Difficulty level (1-3): ");
         int diff = Integer.parseInt(sc.nextLine());
 
-        List<GameCharacter> availableChars = new ArrayList<>(Arrays.asList(
-                new Warrior("W1"),
-                new Mage("M1"),
-                new Rogue("R1")
-        ));
-        List<Tool> availableTools = new ArrayList<>(Arrays.asList(
-                new Sword(),
-                new Shield(),
-                new Staff()
-        ));
-
-        if (availableChars.size() < human + machine || availableTools.size() < human + machine) {
-            System.out.println("Not enough resources to start game");
-            return;
-        }
-
         BattleRoyaleGame game = new BattleRoyaleGame(diff);
 
         for (int i = 0; i < human; i++) {
-            GameCharacter c = chooseCharacter(sc, availableChars);
-            Tool t = chooseTool(sc, availableTools);
+            GameCharacter c = createCharacter(sc);
+            Tool t = chooseTool(sc);
             game.addPlayer(c);
             game.assignTool(c, t);
         }
         Random rand = new Random();
         for (int i = 0; i < machine; i++) {
-            GameCharacter c = availableChars.remove(rand.nextInt(availableChars.size()));
-            Tool t = availableTools.remove(rand.nextInt(availableTools.size()));
+            GameCharacter c;
+            switch (rand.nextInt(3)) {
+                case 0:
+                    c = new Warrior("NPC" + (i + 1));
+                    break;
+                case 1:
+                    c = new Mage("NPC" + (i + 1));
+                    break;
+                default:
+                    c = new Rogue("NPC" + (i + 1));
+                    break;
+            }
+            Tool t;
+            switch (rand.nextInt(3)) {
+                case 0:
+                    t = new Sword();
+                    break;
+                case 1:
+                    t = new Shield();
+                    break;
+                default:
+                    t = new Staff();
+                    break;
+            }
             game.addPlayer(c);
             game.assignTool(c, t);
         }
@@ -70,28 +75,36 @@ public class Main {
         }
     }
 
-    private static GameCharacter chooseCharacter(Scanner sc, List<GameCharacter> list) {
+    private static GameCharacter createCharacter(Scanner sc) {
         while (true) {
-            for (int i = 0; i < list.size(); i++) {
-                System.out.println(i + 1 + ": " + list.get(i));
-            }
-            System.out.print("Choose character: ");
-            int opt = Integer.parseInt(sc.nextLine()) - 1;
-            if (opt >= 0 && opt < list.size()) {
-                return list.remove(opt);
+            System.out.print("Choose character type (Warrior/Mage/Rogue): ");
+            String type = sc.nextLine().trim().toLowerCase();
+            if (type.equals("warrior") || type.equals("mage") || type.equals("rogue")) {
+                System.out.print("Enter name: ");
+                String name = sc.nextLine().trim();
+                switch (type) {
+                    case "warrior":
+                        return new Warrior(name);
+                    case "mage":
+                        return new Mage(name);
+                    default:
+                        return new Rogue(name);
+                }
             }
         }
     }
 
-    private static Tool chooseTool(Scanner sc, List<Tool> list) {
+    private static Tool chooseTool(Scanner sc) {
         while (true) {
-            for (int i = 0; i < list.size(); i++) {
-                System.out.println(i + 1 + ": " + list.get(i));
-            }
-            System.out.print("Choose tool: ");
-            int opt = Integer.parseInt(sc.nextLine()) - 1;
-            if (opt >= 0 && opt < list.size()) {
-                return list.remove(opt);
+            System.out.print("Choose tool (Sword/Shield/Staff): ");
+            String type = sc.nextLine().trim().toLowerCase();
+            switch (type) {
+                case "sword":
+                    return new Sword();
+                case "shield":
+                    return new Shield();
+                case "staff":
+                    return new Staff();
             }
         }
     }
