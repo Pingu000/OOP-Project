@@ -43,6 +43,10 @@ public abstract class GameCharacter implements Comparable<GameCharacter> {
         health += amount;
     }
 
+    public void increaseAttack(int amount) {
+        attack += amount;
+    }
+
     public void attack(GameCharacter target) {
         target.receiveDamage(attack);
     }

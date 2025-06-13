@@ -22,6 +22,11 @@ public class BattleRoyaleGame {
         players.add(character);
     }
 
+    public void addNPCPlayer(GameCharacter character) {
+        character.increaseAttack(difficulty * 5);
+        players.add(character);
+    }
+
     public void assignTool(GameCharacter c, Tool t) {
         if (t.checkModification(c)) {
             t.modify(c);
