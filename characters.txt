@@ -1,0 +1,6 @@
+warrior,Thor
+mage,Gandalf
+rogue,Loki
+warrior,Arthur
+mage,Merlin
+rogue,Robin
