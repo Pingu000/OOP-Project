@@ -31,7 +31,11 @@ public class BattleRoyaleGame {
 
     public void runBattle() {
         log.add("Battle starts!");
+        System.out.println("Battle starts!");
+        int round = 1;
         while (aliveCount() > 1) {
+            System.out.println("--- Round " + round + " ---");
+            log.add("Round " + round);
             Collections.shuffle(players, random);
             for (GameCharacter p : new ArrayList<>(players)) {
                 if (!p.isAlive()) continue;
@@ -39,14 +43,26 @@ public class BattleRoyaleGame {
                 if (target != null) {
                     p.attack(target);
                     log.add(p.getName() + " attacked " + target.getName());
+                    System.out.println(p.getName() + " attacked " + target.getName() +
+                            " (" + target.getName() + " HP: " + target.getHealth() + ")");
                     if (!target.isAlive()) {
                         log.add(target.getName() + " has fallen.");
+                        System.out.println(target.getName() + " has fallen.");
                     }
                     if (aliveCount() <= 1) break;
                 }
             }
+            printStatus();
+            round++;
         }
         log.add("Battle finished");
+        System.out.println("Battle finished");
+    }
+
+    private void printStatus() {
+        for (GameCharacter c : players) {
+            System.out.println(c.getName() + ": " + c.getHealth() + " HP");
+        }
     }
 
     private GameCharacter selectTarget(GameCharacter attacker) {
