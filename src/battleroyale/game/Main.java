@@ -50,7 +50,7 @@ public class Main {
                     t = new Staff();
                     break;
             }
-            game.addPlayer(c);
+            game.addNPCPlayer(c);
             game.assignTool(c, t);
         }
 
