@@ -1,0 +1,6 @@
+sword
+shield
+staff
+sword
+shield
+staff
