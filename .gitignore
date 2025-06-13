@@ -1,0 +1,5 @@
+out/
+build/
+result.txt
+.idea/
+*.class
