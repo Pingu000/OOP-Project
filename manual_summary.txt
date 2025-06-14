@@ -6,7 +6,7 @@ Estadísticas base de los personajes:
 Bonificación de las armas:
 - Sword: +5 al ataque.
 - Shield: +3 a la defensa.
-- Staff: +4 al ataque.
+- Amulet: +20 a la vida.
 
 Acciones disponibles:
 - attack: el personaje selecciona un objetivo y le aplica su valor de ataque. Si el objetivo está defendiendo, el daño se reduce a la mitad.
