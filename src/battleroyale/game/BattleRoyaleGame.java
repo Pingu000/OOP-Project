@@ -10,6 +10,7 @@ import java.util.*;
 
 public class BattleRoyaleGame {
     private final List<GameCharacter> players = new ArrayList<>();
+    private final Set<GameCharacter> humanPlayers = new HashSet<>();
     private final BattleLog log = new BattleLog(1000);
     private final Random random = new Random();
     private final int difficulty;
@@ -20,6 +21,7 @@ public class BattleRoyaleGame {
 
     public void addPlayer(GameCharacter character) {
         players.add(character);
+        humanPlayers.add(character);
     }
 
     public void addNPCPlayer(GameCharacter character) {
@@ -37,24 +39,40 @@ public class BattleRoyaleGame {
     public void runBattle() {
         log.add("Battle starts!");
         System.out.println("Battle starts!");
+        Scanner sc = new Scanner(System.in);
         int round = 1;
         while (aliveCount() > 1) {
             System.out.println("--- Round " + round + " ---");
             log.add("Round " + round);
+            Set<GameCharacter> defending = new HashSet<>();
             Collections.shuffle(players, random);
             for (GameCharacter p : new ArrayList<>(players)) {
                 if (!p.isAlive()) continue;
-                GameCharacter target = selectTarget(p);
-                if (target != null) {
-                    p.attack(target);
-                    log.add(p.getName() + " attacked " + target.getName());
-                    System.out.println(p.getName() + " attacked " + target.getName() +
-                            " (" + target.getName() + " HP: " + target.getHealth() + ")");
-                    if (!target.isAlive()) {
-                        log.add(target.getName() + " has fallen.");
-                        System.out.println(target.getName() + " has fallen.");
+
+                if (humanPlayers.contains(p)) {
+                    System.out.print(p.getName() + " choose action (attack/defend/heal): ");
+                    String action = sc.nextLine().trim().toLowerCase();
+                    if (action.equals("heal")) {
+                        p.heal(25);
+                        log.add(p.getName() + " healed");
+                        System.out.println(p.getName() + " healed (HP: " + p.getHealth() + ")");
+                    } else if (action.equals("defend")) {
+                        defending.add(p);
+                        log.add(p.getName() + " is defending");
+                        System.out.println(p.getName() + " is defending");
+                    } else { // attack
+                        GameCharacter target = chooseTargetFromInput(p, sc);
+                        if (target != null) {
+                            performAttack(p, target, defending);
+                            if (aliveCount() <= 1) break;
+                        }
                     }
-                    if (aliveCount() <= 1) break;
+                } else { // NPC behaviour
+                    GameCharacter target = selectTarget(p);
+                    if (target != null) {
+                        performAttack(p, target, defending);
+                        if (aliveCount() <= 1) break;
+                    }
                 }
             }
             printStatus();
@@ -77,6 +95,46 @@ public class BattleRoyaleGame {
         }
         if (alive.isEmpty()) return null;
         return alive.get(random.nextInt(alive.size()));
+    }
+
+    private GameCharacter chooseTargetFromInput(GameCharacter attacker, Scanner sc) {
+        List<GameCharacter> alive = new ArrayList<>();
+        for (GameCharacter c : players) {
+            if (c.isAlive() && c != attacker) alive.add(c);
+        }
+        if (alive.isEmpty()) return null;
+        while (true) {
+            System.out.println("Choose target:");
+            for (int i = 0; i < alive.size(); i++) {
+                System.out.println((i + 1) + ". " + alive.get(i).getName());
+            }
+            String in = sc.nextLine().trim();
+            try {
+                int idx = Integer.parseInt(in) - 1;
+                if (idx >= 0 && idx < alive.size()) {
+                    return alive.get(idx);
+                }
+            } catch (NumberFormatException ignore) {
+            }
+            for (GameCharacter c : alive) {
+                if (c.getName().equalsIgnoreCase(in)) return c;
+            }
+        }
+    }
+
+    private void performAttack(GameCharacter attacker, GameCharacter target, Set<GameCharacter> defending) {
+        int damage = attacker.getAttack();
+        if (defending.contains(target)) {
+            damage /= 2;
+        }
+        target.receiveDamage(damage);
+        log.add(attacker.getName() + " attacked " + target.getName());
+        System.out.println(attacker.getName() + " attacked " + target.getName() +
+                " (" + target.getName() + " HP: " + target.getHealth() + ")");
+        if (!target.isAlive()) {
+            log.add(target.getName() + " has fallen.");
+            System.out.println(target.getName() + " has fallen.");
+        }
     }
 
     private int aliveCount() {
