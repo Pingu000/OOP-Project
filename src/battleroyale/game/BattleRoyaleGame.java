@@ -84,7 +84,9 @@ public class BattleRoyaleGame {
 
     private void printStatus() {
         for (GameCharacter c : players) {
-            System.out.println(c.getName() + ": " + c.getHealth() + " HP");
+            if (c.isAlive()) {
+                System.out.println(c.getName() + ": " + c.getHealth() + " HP");
+            }
         }
     }
 

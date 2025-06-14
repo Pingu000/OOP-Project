@@ -19,7 +19,9 @@ public class Main {
         BattleRoyaleGame game = new BattleRoyaleGame(diff);
 
         for (int i = 0; i < human; i++) {
+            showCharacterStats();
             GameCharacter c = createCharacter(sc);
+            showToolStats();
             Tool t = chooseTool(sc);
             game.addPlayer(c);
             game.assignTool(c, t);
@@ -107,5 +109,19 @@ public class Main {
                     return new Staff();
             }
         }
+    }
+
+    private static void showCharacterStats() {
+        System.out.println("Character stats:");
+        System.out.println(new Warrior("Warrior"));
+        System.out.println(new Mage("Mage"));
+        System.out.println(new Rogue("Rogue"));
+    }
+
+    private static void showToolStats() {
+        System.out.println("Tool stats:");
+        System.out.println("Sword: +5 attack");
+        System.out.println("Shield: +3 defense");
+        System.out.println("Staff: +4 attack");
     }
 }
