@@ -49,7 +49,7 @@ public class Main {
                     t = new Shield();
                     break;
                 default:
-                    t = new Staff();
+                    t = new Amulet();
                     break;
             }
             game.addNPCPlayer(c);
@@ -98,15 +98,15 @@ public class Main {
 
     private static Tool chooseTool(Scanner sc) {
         while (true) {
-            System.out.print("Choose tool (Sword/Shield/Staff): ");
+            System.out.print("Choose tool (Sword/Shield/Amulet): ");
             String type = sc.nextLine().trim().toLowerCase();
             switch (type) {
                 case "sword":
                     return new Sword();
                 case "shield":
                     return new Shield();
-                case "staff":
-                    return new Staff();
+                case "amulet":
+                    return new Amulet();
             }
         }
     }
@@ -122,6 +122,6 @@ public class Main {
         System.out.println("Tool stats:");
         System.out.println("Sword: +5 attack");
         System.out.println("Shield: +3 defense");
-        System.out.println("Staff: +4 attack");
+        System.out.println("Amulet: +20 health");
     }
 }
