@@ -1,0 +1,20 @@
+Estadísticas base de los personajes:
+- Warrior: 120 puntos de vida, 15 de ataque y 5 de defensa.
+- Mage: 80 puntos de vida, 25 de ataque y 2 de defensa.
+- Rogue: 100 puntos de vida, 18 de ataque y 3 de defensa.
+
+Bonificación de las armas:
+- Sword: +5 al ataque.
+- Shield: +3 a la defensa.
+- Staff: +4 al ataque.
+
+Acciones disponibles:
+- attack: el personaje selecciona un objetivo y le aplica su valor de ataque. Si el objetivo está defendiendo, el daño se reduce a la mitad.
+- defend: permite reducir a la mitad el daño recibido durante esa ronda.
+- heal: recupera 25 puntos de vida instantáneamente.
+
+Efecto de la dificultad:
+- Los personajes controlados por la máquina aumentan su ataque en 5 puntos por cada nivel de dificultad al ser creados.
+
+Desarrollo de las rondas y condición de victoria:
+- En cada ronda todos los personajes vivos actúan en orden aleatorio. El combate finaliza cuando solo queda un superviviente, que se convierte en el ganador.
