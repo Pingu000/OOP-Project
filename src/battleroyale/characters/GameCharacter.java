@@ -18,7 +18,7 @@ public abstract class GameCharacter implements Comparable<GameCharacter> {
     }
 
     public int getHealth() {
-        return health;
+        return Math.max(0, health);
     }
 
     public int getAttack() {

@@ -28,30 +28,16 @@ public class Main {
         }
         Random rand = new Random();
         for (int i = 0; i < machine; i++) {
-            GameCharacter c;
-            switch (rand.nextInt(3)) {
-                case 0:
-                    c = new Warrior("NPC" + (i + 1));
-                    break;
-                case 1:
-                    c = new Mage("NPC" + (i + 1));
-                    break;
-                default:
-                    c = new Rogue("NPC" + (i + 1));
-                    break;
-            }
-            Tool t;
-            switch (rand.nextInt(3)) {
-                case 0:
-                    t = new Sword();
-                    break;
-                case 1:
-                    t = new Shield();
-                    break;
-                default:
-                    t = new Amulet();
-                    break;
-            }
+            GameCharacter c = switch (rand.nextInt(3)) {
+                case 0 -> new Warrior("NPC" + (i + 1));
+                case 1 -> new Mage("NPC" + (i + 1));
+                default -> new Rogue("NPC" + (i + 1));
+            };
+            Tool t = switch (rand.nextInt(3)) {
+                case 0 -> new Sword();
+                case 1 -> new Shield();
+                default -> new Amulet();
+            };
             game.addNPCPlayer(c);
             game.assignTool(c, t);
         }
